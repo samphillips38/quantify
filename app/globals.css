@@ -1,0 +1,128 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 280 100% 98%;
+    --foreground: 280 10% 10%;
+
+    --card: 280 100% 98%;
+    --card-foreground: 280 10% 10%;
+
+    --popover: 280 100% 98%;
+    --popover-foreground: 280 10% 10%;
+
+    --primary: 280 95% 65%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 169 100% 85%;
+    --secondary-foreground: 169 50% 20%;
+
+    --muted: 280 20% 92%;
+    --muted-foreground: 280 5% 40%;
+
+    --accent: 341 95% 85%;
+    --accent-foreground: 341 50% 25%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 280 20% 88%;
+    --input: 280 20% 88%;
+    --ring: 280 95% 65%;
+
+    --radius: 0.5rem;
+
+    /* Chart Colors */
+    --chart-1: 280 95% 75%;
+    --chart-2: 169 100% 75%;
+    --chart-3: 341 95% 85%;
+    --chart-4: 250 95% 85%;
+
+    /* Sidebar specific colors */
+    --sidebar-background: 280 100% 98%;
+    --sidebar-foreground: 280 10% 10%;
+    --sidebar-border: 280 20% 88%;
+    --sidebar-primary: 280 95% 65%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 280 20% 92%;
+    --sidebar-accent-foreground: 280 10% 10%;
+    --sidebar-ring: 280 95% 65%;
+  }
+
+  .dark {
+    --background: 280 50% 4%;
+    --foreground: 280 10% 98%;
+
+    --card: 280 50% 4%;
+    --card-foreground: 280 10% 98%;
+
+    --popover: 280 50% 4%;
+    --popover-foreground: 280 10% 98%;
+
+    --primary: 280 95% 65%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 169 100% 25%;
+    --secondary-foreground: 169 100% 85%;
+
+    --muted: 280 20% 12%;
+    --muted-foreground: 280 5% 65%;
+
+    --accent: 341 95% 25%;
+    --accent-foreground: 341 95% 85%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 280 20% 18%;
+    --input: 280 20% 18%;
+    --ring: 280 95% 65%;
+
+    /* Chart Colors - Darker but still vibrant */
+    --chart-1: 280 70% 50%;
+    --chart-2: 169 70% 50%;
+    --chart-3: 341 70% 50%;
+    --chart-4: 250 70% 50%;
+
+    /* Sidebar specific colors */
+    --sidebar-background: 280 50% 4%;
+    --sidebar-foreground: 280 10% 98%;
+    --sidebar-border: 280 20% 18%;
+    --sidebar-primary: 280 95% 65%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 280 20% 12%;
+    --sidebar-accent-foreground: 280 10% 98%;
+    --sidebar-ring: 280 95% 65%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Add some fun gradients and animations */
+.gradient-border {
+  position: relative;
+  border-radius: var(--radius);
+}
+
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: calc(var(--radius) + 2px);
+  background: linear-gradient(45deg, hsl(280, 95%, 65%), hsl(169, 100%, 75%), hsl(341, 95%, 85%), hsl(250, 95%, 85%));
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  z-index: 0;
+}
+

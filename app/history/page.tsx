@@ -48,7 +48,7 @@ export default function HistoryPage() {
   })
 
   return (
-    <div className="container py-6 md:py-10">
+    <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 py-6 md:py-10">
       <div className="flex flex-col gap-4 md:gap-6">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>

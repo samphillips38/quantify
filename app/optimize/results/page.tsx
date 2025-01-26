@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 
 export default function ResultsPage() {
   return (
-    <div className="container py-6 md:py-10">
+    <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 py-6 md:py-10">
       <div className="mb-6 md:mb-8">
         <h1 className="text-2xl md:text-3xl font-bold mb-2">Your Optimal Investment Plan</h1>
         <p className="text-muted-foreground">

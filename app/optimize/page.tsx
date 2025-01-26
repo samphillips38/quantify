@@ -71,7 +71,7 @@ export default function OptimizePage() {
 
   return (
     <>
-      <div className="container max-w-3xl py-10">
+      <div className="mx-auto max-w-3xl w-full px-4 sm:px-6 lg:px-8 py-10 md:py-12">
         <Card>
           <CardHeader>
             <CardTitle>Investment Optimization</CardTitle>

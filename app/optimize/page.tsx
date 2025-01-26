@@ -75,7 +75,7 @@ export default function OptimizePage() {
         <Card>
           <CardHeader>
             <CardTitle>Investment Optimization</CardTitle>
-            <CardDescription>Let us help you find the optimal investment strategy</CardDescription>
+            {/* <CardDescription>Let us help you find the optimal investment strategy</CardDescription> */}
           </CardHeader>
           <CardContent>
             {/* Current Investments Summary */}
@@ -87,7 +87,7 @@ export default function OptimizePage() {
                     <div className="text-sm text-muted-foreground">Savings Accounts</div>
                     <div className="text-2xl font-bold">£{currentInvestments.savingsAccounts.toLocaleString()}</div>
                     <div className="text-xs text-muted-foreground mt-1">
-                      Including ISA: £{currentInvestments.isaSavings.toLocaleString()}
+                      ISA: £{currentInvestments.isaSavings.toLocaleString()}
                     </div>
                   </CardContent>
                 </Card>
@@ -103,42 +103,35 @@ export default function OptimizePage() {
             <Separator className="my-6" />
 
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* ISA Allowance Progress */}
-              <div className="space-y-2">
+              {/* ISA Input and Progress */}
+              <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <Label>ISA Allowance Usage</Label>
+                  <Label>ISA Allowance</Label>
                   <span className="text-sm text-muted-foreground">
-                    £{Number.parseInt(isaAllowance || "0").toLocaleString()} / £20,000
+                    £{remainingIsaAllowance.toLocaleString()} available
                   </span>
                 </div>
+                <FormattedMoneyInput
+                  id="isa-used"
+                  value={isaAllowance}
+                  onChange={(value) => {
+                    const numericValue = Math.min(20000, Math.max(0, Number.parseInt(value || "0")))
+                    setIsaAllowance(numericValue.toString())
+                  }}
+                  icon={<PiggyBank className="h-4 w-4" />}
+                />
                 <Progress value={isaAllowancePercentage} className="h-2" />
-                <p className="text-sm text-muted-foreground">Remaining: £{remainingIsaAllowance.toLocaleString()}</p>
               </div>
 
-              {/* ISA and Income Information */}
-              <div className="grid gap-6 md:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="isa-used">ISA Allowance Used</Label>
-                  <FormattedMoneyInput
-                    id="isa-used"
-                    value={isaAllowance}
-                    onChange={(value) => {
-                      const numericValue = Math.min(20000, Math.max(0, Number.parseInt(value || "0")))
-                      setIsaAllowance(numericValue.toString())
-                    }}
-                    icon={<PiggyBank className="h-4 w-4" />}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="yearly-income">Yearly Non-Savings Income</Label>
-                  <FormattedMoneyInput
-                    id="yearly-income"
-                    value={yearlyIncome}
-                    onChange={setYearlyIncome}
-                    icon={<PoundSterling className="h-4 w-4" />}
-                  />
-                </div>
+              {/* Income Information */}
+              <div className="space-y-2">
+                <Label htmlFor="yearly-income">Yearly Non-Savings Income</Label>
+                <FormattedMoneyInput
+                  id="yearly-income"
+                  value={yearlyIncome}
+                  onChange={setYearlyIncome}
+                  icon={<PoundSterling className="h-4 w-4" />}
+                />
               </div>
 
               <Separator />

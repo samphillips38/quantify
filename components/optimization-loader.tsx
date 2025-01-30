@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress"
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
 import { TrendingUp, Calculator, LineChart, Binary, ArrowRight } from "lucide-react"
+import { OptimizationSurface } from "@/components/optimization-surface"
 
 // Generate a large set of realistic investment options
 const generateInvestmentOptions = () => {
@@ -123,34 +124,7 @@ export function OptimizationLoader({ onComplete }: OptimizationLoaderProps) {
 
           {/* Spinning Wheel Display */}
           <div className="relative h-[280px] overflow-hidden rounded-lg border bg-muted/50">
-            <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-transparent to-background/80 z-10 pointer-events-none" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="relative w-full">
-                {visibleOptions.map(({ name, rate, position }) => (
-                  <motion.div
-                    key={`${name}-${position}`}
-                    className={cn(
-                      "absolute w-full left-0 px-4 py-3",
-                      "transition-all duration-200 ease-in-out",
-                      position === 0 && "bg-primary/10 font-medium",
-                    )}
-                    style={{
-                      transform: `
-                        translateY(${position * 40}px)
-                        scale(${1 - Math.abs(position) * 0.1})
-                      `,
-                      opacity: 1 - Math.abs(position) * 0.2,
-                      zIndex: 10 - Math.abs(position),
-                    }}
-                  >
-                    <div className="flex justify-between items-center">
-                      <div className="truncate mr-4">{name}</div>
-                      <div className="font-mono whitespace-nowrap">{rate.toFixed(2)}%</div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
+            {typeof window !== 'undefined' && <OptimizationSurface irr={bestOption.irr} progress={progress} />}
           </div>
 
           {/* Optimization Progress */}

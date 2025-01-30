@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "buildCommand": "bun run build",
+  "installCommand": "bun install",
+  "framework": "nextjs",
+  "env": {
+    "NEXT_PUBLIC_BACKEND_URL": "@backend_url",
+    "MAGIC_SECRET_KEY": "@magic_secret_key"
+  }
+} 

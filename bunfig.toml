@@ -1,0 +1,9 @@
+[install]
+peer-dependencies = true
+optional-dependencies = true
+exact-versions = true
+
+[install.scopes]
+strip-ansi-cjs = "npm:strip-ansi@^6.0.1"
+string-width-cjs = "npm:string-width@^4.2.3"
+wrap-ansi-cjs = "npm:wrap-ansi@^7.0.0" 

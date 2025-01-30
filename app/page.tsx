@@ -1,6 +1,10 @@
+"use client"
+
+import { useContext } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { CircleIcon as CirclePoundIcon, PiggyBankIcon, TrendingUpIcon } from "lucide-react"
 import { InvestmentPieChart } from "@/components/investment-pie-chart"
+import { UserContext } from "@/lib/UserContext"
 
 interface Investment {
   name: string
@@ -51,8 +55,12 @@ async function getDashboardData() {
   }
 }
 
-export default async function DashboardPage() {
-  const data = await getDashboardData()
+export default function DashboardPage() {
+  const [user] = useContext(UserContext)
+
+  if (!user || user.loading) {
+    return <div>Loading...</div>
+  }
 
   return (
     <div className="container px-4 py-6 md:py-10 max-w-7xl mx-auto">
@@ -65,9 +73,9 @@ export default async function DashboardPage() {
             <CirclePoundIcon className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">£{data.totalInvested.toLocaleString()}</div>
+            <div className="text-2xl font-bold">£{(user.totalInvested ?? 0).toLocaleString()}</div>
             <p className="text-xs text-muted-foreground">
-              {data.yearOverYearChange >= 0 ? "+" : ""}{data.yearOverYearChange}% from last year
+              {(user.yearOverYearChange ?? 0) >= 0 ? "+" : ""}{user.yearOverYearChange ?? 0}% from last year
             </p>
           </CardContent>
         </Card>
@@ -77,7 +85,7 @@ export default async function DashboardPage() {
             <PiggyBankIcon className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">£{data.isaAllowanceRemaining.toLocaleString()}</div>
+            <div className="text-2xl font-bold">£{(user.isaAllowanceRemaining ?? 0).toLocaleString()}</div>
             <p className="text-xs text-muted-foreground">of £20,000 annual allowance</p>
           </CardContent>
         </Card>
@@ -87,15 +95,15 @@ export default async function DashboardPage() {
             <TrendingUpIcon className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">£{data.totalReturns.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">{data.returnRate}% return rate</p>
+            <div className="text-2xl font-bold">£{(user.totalReturns ?? 0).toLocaleString()}</div>
+            <p className="text-xs text-muted-foreground">{user.returnRate ?? 0}% return rate</p>
           </CardContent>
         </Card>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="w-full overflow-hidden">
-          <InvestmentPieChart investments={data.investments} />
+          <InvestmentPieChart investments={user.investments ?? []} />
         </div>
         <Card className="w-full overflow-hidden">
           <CardHeader>
@@ -103,7 +111,7 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent className="flex-1">
             <div className="space-y-4">
-              {data.investments.map((investment: Investment) => (
+              {(user.investments ?? []).map((investment: Investment) => (
                 <div key={investment.name} className="flex items-center justify-between border-b pb-4">
                   <div className="min-w-0 flex-1 pr-4">
                     <div className="font-medium truncate">{investment.name}</div>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import { MainNav } from "@/components/main-nav"
+import { LayoutClient } from "./layout-client"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -18,10 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="relative flex min-h-screen flex-col">
-          <MainNav />
-          <main className="flex-1">{children}</main>
-        </div>
+        <LayoutClient>{children}</LayoutClient>
       </body>
     </html>
   )

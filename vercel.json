@@ -6,5 +6,10 @@
   "env": {
     "NEXT_PUBLIC_BACKEND_URL": "@backend_url",
     "MAGIC_SECRET_KEY": "@magic_secret_key"
+  },
+  "build": {
+    "env": {
+      "NODE_VERSION": "20"
+    }
   }
 } 

@@ -24,6 +24,7 @@ export function LayoutClient({
           const didToken = await magic.user.getIdToken()
           // Get user data from your API
           const res = await fetch('/api/user', {
+            method: 'POST',
             headers: {
               Authorization: `Bearer ${didToken}`,
             },

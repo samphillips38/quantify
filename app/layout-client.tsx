@@ -18,23 +18,43 @@ export function LayoutClient({
     const checkUser = async () => {
       try {
         setUser({ loading: true })
+        
+        // Check if Magic is ready
+        if (!magic) {
+          throw new Error('Magic SDK is not initialized')
+        }
+
         const isLoggedIn = await magic.user.isLoggedIn()
+        console.log('[Layout] User logged in:', isLoggedIn)
         
         if (isLoggedIn) {
-          const didToken = await magic.user.getIdToken()
-          // Get user data from your API
-          const res = await fetch('/api/user', {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${didToken}`,
-            },
-          })
-          
-          if (res.ok) {
-            const userData = await res.json()
-            setUser({ ...userData, loading: false })
-          } else {
-            throw new Error('Failed to get user data')
+          try {
+            const token = await magic.user.getIdToken()
+            console.log('[Layout] Got DID token:', token ? 'present' : 'missing')
+            
+            const response = await fetch('http://127.0.0.1:5000/api/users/auth', {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+              }
+            })
+
+            if (!response.ok) {
+              const text = await response.text()
+              console.error('[Layout] API error:', response.status, text)
+              throw new Error(`API error: ${text}`)
+            }
+
+            const data = await response.json()
+            console.log('[Layout] Parsed user data:', data.user)
+            setUser({ ...data.user, loading: false })
+          } catch (error) {
+            console.error('[Layout] Authentication error:', error)
+            // If there's an auth error, log out the user
+            await magic.user.logout()
+            setUser({ loading: false })
+            router.push('/login')
           }
         } else {
           if (window.location.pathname !== '/login') {
@@ -43,14 +63,14 @@ export function LayoutClient({
           setUser({ loading: false })
         }
       } catch (error) {
-        console.error('Error loading user:', error)
+        console.error('[Layout] Error checking user:', error)
         setUser({ loading: false })
         router.push('/login')
       }
     }
 
     checkUser()
-  }, [])
+  }, [router])
 
   return (
     <UserContext.Provider value={[user, setUser]}>

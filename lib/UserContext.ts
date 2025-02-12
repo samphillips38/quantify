@@ -1,3 +1,5 @@
+import { createContext, Dispatch, SetStateAction } from 'react'
+
 export type User = {
   id?: string;
   email?: string;
@@ -7,6 +9,6 @@ export type User = {
   loading?: boolean;
 }
 
-import { createContext, Dispatch, SetStateAction } from 'react'
+type UserContextType = [User | undefined, Dispatch<SetStateAction<User | undefined>>]
 
-export const UserContext = createContext<[User | undefined, Dispatch<SetStateAction<User | undefined>>] | undefined>(undefined) 
+export const UserContext = createContext<UserContextType | undefined>(undefined) 

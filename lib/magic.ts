@@ -1,13 +1,14 @@
 import { Magic } from 'magic-sdk'
 
-const createMagic = () => {
-  if (typeof window === 'undefined') return null
-  
-  return new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY!, {
+let magic: Magic | null = null
+
+if (typeof window !== 'undefined') {
+  magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY!, {
     network: {
-      chainId: 1,
+      rpcUrl: 'https://mainnet.infura.io/v3/',  // Default fallback RPC URL
+      chainId: 1
     }
   })
 }
 
-export const magic = createMagic() 
+export { magic } 

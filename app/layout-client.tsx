@@ -8,6 +8,8 @@ import { MainNav } from "@/components/main-nav"
 import { LoadingSpinner } from "@/components/loading-spinner"
 import { DashboardProvider } from "@/components/dashboard-provider"
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:5000'
+
 export function LayoutClient({
   children,
 }: {
@@ -43,7 +45,7 @@ export function LayoutClient({
         const token = await magic.user.getIdToken()
         
         setLoadingState("Validating user session...")
-        const response = await fetch('http://127.0.0.1:5000/api/users/auth', {
+        const response = await fetch(`${API_URL}/api/users/auth`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,

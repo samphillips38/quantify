@@ -19,51 +19,37 @@ export function LayoutClient({
       try {
         setUser({ loading: true })
         
-        // Check if Magic is ready
         if (!magic) {
-          throw new Error('Magic SDK is not initialized')
+          throw new Error('Magic SDK not initialized')
         }
 
         const isLoggedIn = await magic.user.isLoggedIn()
-        console.log('[Layout] User logged in:', isLoggedIn)
         
-        if (isLoggedIn) {
-          try {
-            const token = await magic.user.getIdToken()
-            console.log('[Layout] Got DID token:', token ? 'present' : 'missing')
-            
-            const response = await fetch('http://127.0.0.1:5000/api/users/auth', {
-              method: 'POST',
-              headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-              }
-            })
-
-            if (!response.ok) {
-              const text = await response.text()
-              console.error('[Layout] API error:', response.status, text)
-              throw new Error(`API error: ${text}`)
-            }
-
-            const data = await response.json()
-            console.log('[Layout] Parsed user data:', data.user)
-            setUser({ ...data.user, loading: false })
-          } catch (error) {
-            console.error('[Layout] Authentication error:', error)
-            // If there's an auth error, log out the user
-            await magic.user.logout()
-            setUser({ loading: false })
-            router.push('/login')
-          }
-        } else {
+        if (!isLoggedIn) {
           if (window.location.pathname !== '/login') {
             router.push('/login')
           }
           setUser({ loading: false })
+          return
         }
+
+        const token = await magic.user.getIdToken()
+        const response = await fetch('http://127.0.0.1:5000/api/users/auth', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        })
+
+        if (!response.ok) {
+          throw new Error(await response.text())
+        }
+
+        const data = await response.json()
+        setUser({ ...data.user, loading: false })
       } catch (error) {
-        console.error('[Layout] Error checking user:', error)
+        console.error('Auth error:', error)
         setUser({ loading: false })
         router.push('/login')
       }
